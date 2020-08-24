@@ -24,13 +24,13 @@ const contactSchema = new Schema({
     }
 });
 
-const Contact = (module.exports = mongoose.model('Plant', contactSchema));
+const Contact = (module.exports = mongoose.model('Contact', contactSchema));
 
-module.exports.get = (callback, limit) => {
-    Contact.find(callback).limit(limit);
+module.exports.get = function(callback, limit)  {
+   return Contact.find(callback).limit(limit);
 };
 
-module.exports.getContact = (username) => { 
+module.exports.getContact = function (username)  { 
     return Contact.findOne({ username })
     .then((contact) => { 
         return contact; 

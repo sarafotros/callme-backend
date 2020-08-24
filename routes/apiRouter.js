@@ -1,9 +1,9 @@
 const apiRouter = require('express').Router();
-const {addContact} = require('../controllers/Contact')
+const {addContact, index} = require('../controllers/Contact')
 
 
 apiRouter.route('/contacts')
-    .post(addContacts)
+    .post(addContact)
     .get(index);
 
 module.exports = apiRouter;
