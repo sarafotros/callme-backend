@@ -25,3 +25,26 @@ exports.addContact = function (req, res, next) {
         }
     });
 }
+
+exports.index = function (req, res, next) {
+    Contact.get(function (err, contacts) {
+      if (err) return next(err);
+      res.json({
+        status: "success",
+        message: "Contact retrieved successfully",
+        data: contacts
+      });
+    });
+};
+
+exports.sendContact = function (req, res, next) {
+    getContact(req.params.username)
+        .then(contact => {
+            if (contact === null) {
+                res.status(400).send({msg: 'Invalid username'})
+            } else {
+                res.status(200).send({contact});
+            }
+        })
+        .catch(next)
+}
