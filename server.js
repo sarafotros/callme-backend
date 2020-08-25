@@ -7,6 +7,7 @@ const apiRouter = require('./routes/apiRouter')
 app.use(cors())
 
 app.use(express.json())
+
 app.use('/addressbookservice', apiRouter)
 
 module.exports = app

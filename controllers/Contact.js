@@ -1,3 +1,4 @@
+const {updateContact} = require('../models/Contact')
 const Contact = require('../models/Contact');
 
 exports.addContact = function (req, res, next) {
@@ -35,14 +36,44 @@ exports.index = function (req, res, next) {
     });
 };
 
-// exports.sendContact = function (req, res, next) {
-//     getContact(req.params.username)
-//         .then(contact => {
-//             if (contact === null) {
-//                 res.status(400).send({msg: 'Invalid username'})
-//             } else {
-//                 res.status(200).send({contact});
-//             }
-//         })
-//         .catch(next)
-// }
+exports.sendContact = function (req, res, next) {
+    getContact(req.params.username)
+        .then(contact => {
+            if (contact === null) {
+                res.status(400).send({msg: 'Invalid username'})
+            } else {
+                res.status(200).send({contact});
+            }
+        })
+        .catch(next)
+}
+
+exports.removeContact = async (req, res, next) => {
+    const contactExists = await Contact.exists({ username: req.params.username})
+    if (!contactExists) {
+      res.status(400).send({msg: 'Contact does not exist'})
+    } else {
+    Contact.findOneAndRemove({username: req.params.username}, function (err) {
+      if (err) return res.status(400).send({msg: 'Invalid username'});
+      res.json({
+          status: "success",
+          message: "Contact successfully deleted"
+          });
+      });
+    }
+}
+
+
+exports.updateContactInputs = function (req, res, next) {
+    const userId = req.params.id;
+    updateContact(userId, req.body, res)
+        .then((contact) => {
+          if (contact === null) {
+            res.status(400).send({ msg: "Invalid ID" });
+          } else {
+            res.status(200).send({ contact });
+          }
+        })
+        .catch(next);
+  };
+

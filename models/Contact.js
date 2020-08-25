@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { nextTick } = require('async');
 const Schema = mongoose.Schema;
 
 const contactSchema = new Schema({
@@ -36,3 +37,19 @@ module.exports.getContact = function (username)  {
         return contact; 
     }); 
 };
+
+module.exports.updateContact = async (id, updateBody) => {
+    const contactExists = await Contact.exists({ _id: id})
+    console.log('update',updateBody );
+    console.log('id', id);
+    if (!contactExists) {
+      return new Promise (resolve => {
+          resolve(null)
+      })
+    } else {
+      return Contact.findByIdAndUpdate({ _id: id}, { $set: updateBody }, { new: true }, function (err,contact) {
+          if(err) return next(err);
+        return contact;
+      });
+    };
+}
