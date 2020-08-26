@@ -39,9 +39,9 @@ module.exports.getContact = function (username)  {
 };
 
 module.exports.updateContact = async (id, updateBody) => {
+    console.log('id', id);
     const contactExists = await Contact.exists({ _id: id})
     console.log('update',updateBody );
-    console.log('id', id);
     if (!contactExists) {
       return new Promise (resolve => {
           resolve(null)
